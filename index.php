@@ -79,5 +79,8 @@ session_start();
      ?> 
     </ul>
 </div>
+<div class="bodyMarginTop centerText">
+  <h1>Welcome to the shop which have everything to your sweet tooth!</h1>
+</div>
 </body>
 </html>

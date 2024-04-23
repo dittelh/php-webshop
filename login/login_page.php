@@ -91,14 +91,14 @@ session_start();
     <label for="password"><b>Password</b></label>
     <input type="password" placeholder="Enter Password" name="password" required>
         
-    <button type="submit">Login</button>
+    <button class="btn" type="submit">Login</button>
 
     <?php 
         if(isset($_SESSION['errorMessage'])) {
             echo $_SESSION['errorMessage'];
         }
     ?>
-  <a href="../register/register_page.php"><button type="button">Not a member? Register here!</button></a>
+  <a href="../register/register_page.php"><button class="btn memberBtn" type="button">Not a member? Register here!</button></a>
   </div>
 </form>
 </body>

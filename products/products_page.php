@@ -83,57 +83,74 @@ require_once '../admin/read_products_action.php';
     </ul>
 </div>
 
-<h2 class="bodyMarginTop">Products</h2>
-<?php 
-$categories = isset($_GET['category']) ?  explode(',', $_GET['category']) : '';
-$final_category = is_array($categories) ? end($categories) : '';
-foreach ($products as $product) {
-  $productCategories = explode(',', $product->getProductCategory());
-  if (!empty($final_category) && !in_array($final_category, $productCategories)) {
-    continue;
+<div class="wholeDiv bodyMarginTop">
+  <div>
+  <h2 class="centerText">Products</h2>
+  <?php 
+  $categories = isset($_GET['category']) ?  explode(',', $_GET['category']) : '';
+  $final_category = is_array($categories) ? end($categories) : '';
+  foreach ($products as $product) {
+    $productCategories = explode(',', $product->getProductCategory());
+    if (!empty($final_category) && !in_array($final_category, $productCategories)) {
+      continue;
+    }
+    ?>
+    <form action="buy_product_action.php" method="post" class="productCard">
+      <img class="productImg" src="<?= $product->getProductImage()?>" alt="<?= $product->getProductName()?>">
+      <h4><?= $product->getProductName()?></h4>
+      <div class="priceDiv">
+        <p>Price:</p>
+        <p><?= $product->getProductPrice()?>,-</p>
+      </div>
+      
+      <div class="productStockDiv">
+        <p>Product Stock:</p>
+        <p><?= $product->getProductStock()?></p>
+        <input type="hidden" name="productID" value="<?= $product->getProductID()?>">
+        <input type="hidden" name="productStock" value="<?= $product->getProductStock()?>">
+        <input type="hidden" name="productName" value="<?= $product->getProductName()?>">
+        <input type="hidden" name="productPrice" value="<?= $product->getProductPrice()?>">
+        <input type="hidden" name="categories" value="<?= $_GET['category'] ?? ''?>"> 
+      </div>
+      
+      <div class="productAmountDiv">
+        <label for="productAmount">Product Amount:</label>
+        <input type="number" name="productAmount" placeholder="Enter how many you want" required>
+      </div>
+  
+      <button class="submitBtn" type="submit">Add to cart</button>
+    </form>
+    <?php
   }
   ?>
-  <form action="buy_product_action.php" method="post">
-    <h4><?= $product->getProductName()?></h4>
-    <img class="productImg" src="<?= $product->getProductImage()?>" alt="<?= $product->getProductName()?>">
-    <p><?= $product->getProductPrice()?></p>
-    
-    <p>Product Stock:</p>
-    <p><?= $product->getProductStock()?></p>
-    <input type="hidden" name="productID" value="<?= $product->getProductID()?>">
-    <input type="hidden" name="productStock" value="<?= $product->getProductStock()?>">
-    <input type="hidden" name="productName" value="<?= $product->getProductName()?>">
-    <input type="hidden" name="productPrice" value="<?= $product->getProductPrice()?>">
-    <input type="hidden" name="categories" value="<?= $_GET['category'] ?? ''?>">
+  </div>
 
-    <label for="productAmount">Product Amount:</label>
-    <input type="number" name="productAmount" placeholder="Enter how many you want" required>
-
-    <button type="submit">Add to cart</button>
-  </form>
-  <?php
-}
-?>
-
-<div>
-  <h2>Your cart</h2>
-  <?php 
-  $cartTotalPrice = 0;
-  if(isset($_SESSION['cart'])) {
-    foreach($_SESSION['cart'] as $cartItem) {
-      $cartTotalPrice += $cartItem['totalPrice'];
+  <div class="vl"></div>
+  
+  <div>
+    <h2 class="centerText">Your cart</h2>
+    <div class="cartDiv">
+      <?php 
+      $cartTotalPrice = 0;
+      if(isset($_SESSION['cart'])) {
+        foreach($_SESSION['cart'] as $cartItem) {
+          $cartTotalPrice += $cartItem['totalPrice'];
+          ?>
+          <div class="cartItem">
+            <p class="itemName"><?= $cartItem['name'] ?></p>
+            <p>Amount: <br><?= $cartItem['amount'] ?></p>
+            <p>Item total price: <br><?= $cartItem['totalPrice'] ?>,-</p>
+          </div>
+          <?php
+        }
+      };
       ?>
-      <div>
-        <p><?= $cartItem['name'] ?></p>
-        <p><?= $cartItem['amount'] ?></p>
-        <?= $cartItem['totalPrice'] ?>
+      <div class="totalPriceDiv">
+        <p>Total price:</p>
+        <p><?= $cartTotalPrice ?>,-</p>
       </div>
-      <?php
-    }
-  };
-  ?>
-  <p>Total price:</p>
-  <p><?= $cartTotalPrice ?></p>
+    </div>
+  </div>
 </div>
 
 </body>

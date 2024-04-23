@@ -69,11 +69,11 @@ session_start();
         echo '  <a href="../admin/admin_page.php">
                  <li class="link">Admin Panel</li>
                 </a> 
-                <a href="./logout_page.php">
+                <a href="../login/logout_page.php">
                   <li class="link">Logout</li>
                 </a> ';
      } else {
-        echo '<a href="./login_page.php">
+        echo '<a href="../login/login_page.php">
                     <li class="link">Login</li>
                 </a> ';
      }
@@ -99,7 +99,7 @@ session_start();
     <label for="password"><b>Password</b></label>
     <input type="password" placeholder="Enter Password" name="password" required>
         
-    <button type="submit">Login</button>
+    <button class="btn" type="submit">Login</button>
 
     <?php 
         if(isset($_SESSION['errorMessage'])) {

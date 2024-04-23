@@ -90,7 +90,7 @@ if(!isset($_SESSION['isLoggedIn'])) {
 
 <h2 class="bodyMarginTop">Admin Panel</h2>
 <form action="./create_product_action.php" method="post">
-  <div>
+  <div class="addProductDiv">
     <h3>Add a Product</h3>
     <label for="productName">Product Name:</label>
     <input type="text" name="productName" placeholder="Enter Product Name" required>
@@ -118,54 +118,64 @@ if(!isset($_SESSION['isLoggedIn'])) {
     <label for="productStock">Product Stock:</label>
     <input type="number" name="productStock" placeholder="Enter how many to add" required>
 
-    <button type="submit">Add Product</button>
+    <button class="btn" type="submit">Add Product</button>
   </div>
 </form>
 
 
-<h3>Available Products</h3>
-<?php
-foreach ($products as $product) {
- ?>
- <h4>Product</h4>
- <form action="./update_product_action.php" method="post">
-    <input type="hidden" name="productID" value="<?= $product->getProductID()?>">
+<h3 class="marginTop">Available Products</h3>
+<div class="productsDiv">
+  <?php
+  foreach ($products as $product) {
+  ?>
+  <div class="productDiv">
+    <h4>Edit or delete product</h4>
+    <form action="./update_product_action.php" method="post">
+      <div class="editDiv">
+        <input type="hidden" name="productID" value="<?= $product->getProductID()?>">
+  
+        <label for="productName">Product Name:</label>
+        <input type="text" name="productName" required value="<?= $product->getProductName()?>">
+  
+        <label for="productImage">Product Image:</label>
+        <input type="text" name="productImage" required value="<?= $product->getProductImage()?>">
+  
+        <label for="productPrice">Product Price:</label>
+        <input type="number" name="productPrice" required value="<?= $product->getProductPrice()?>">
+  
+        <label for="productDescription">Product Description:</label>
+        <input type="text" name="productDescription" required value="<?= $product->getProductDescription()?>">
+  
+        <label for="productCategory">Product Category:</label>
+        <select name="productCategory" >
+          <option value="cakes,cheesecakes,fruity" <?= $product->getProductCategory() === 'cakes,cheesecakes,fruity' ? 'selected' : ''?>>Cakes > Cheesecake > Fruity</option>
+          <option value="cakes,cheesecakes,sweet"  <?= $product->getProductCategory() === 'cakes,cheesecakes,sweet' ? 'selected' : ''?>>Cakes > Cheesecake > Sweet</option>
+          <option value="cakes,cupcakes,with-frosting" <?= $product->getProductCategory() === 'cakes,cupcakes,with-frosting' ? 'selected' : ''?>>Cakes > Cupcakes > With frosting</option>
+          <option value="cakes,cupcakes,without-rosting" <?= $product->getProductCategory() === 'cakes,cupcakes,without-rosting' ? 'selected' : ''?>>Cakes > Cupcakes > Without frosting</option>
+          <option value="icecreams,vegan" <?= $product->getProductCategory() === 'icecreams,vegan' ? 'selected' : ''?>>Icecreams > Vegan</option>
+          <option value="icecreams,non-vegan,chocolate" <?= $product->getProductCategory() === 'icecreams,non-vegan,chocolate' ? 'selected' : ''?>>Icecreams > Non-vegan > Chocolate</option>
+          <option value="icecreams,non-vegan,caramel" <?= $product->getProductCategory() === 'icecreams,non-vegan,caramel' ? 'selected' : ''?>>Icecreams > Non-vegan > Caramel</option>
+        </select>
+  
+        <label for="productDescription">Product Stock:</label>
+        <input type="text" name="productStock" required value="<?= $product->getProductStock()?>">
+  
+        <button class="btn" type="submit">Edit Product</button>
+      </div>
+    </form>  
+    
+    <form action="./delete_product_action.php" method="post">
+      <div class="deleteDiv"><input type="hidden" name="productID" value="<?= $product->getProductID()?>">
+        <button class="deleteBtn" type="submit">Delete Product</button>
+      </div> 
+    </form>
+    
+  </div>
+  <?php
+  }
+  ?>
 
-    <label for="productName">Product Name:</label>
-    <input type="text" name="productName" required value="<?= $product->getProductName()?>">
-
-    <label for="productImage">Product Image:</label>
-    <input type="text" name="productImage" required value="<?= $product->getProductImage()?>">
-
-    <label for="productPrice">Product Price:</label>
-    <input type="number" name="productPrice" required value="<?= $product->getProductPrice()?>">
-
-    <label for="productDescription">Product Description:</label>
-    <input type="text" name="productDescription" required value="<?= $product->getProductDescription()?>">
-
-    <label for="productCategory">Product Category:</label>
-    <select name="productCategory" >
-      <option value="cakes,cheesecakes,fruity" <?= $product->getProductCategory() === 'cakes,cheesecakes,fruity' ? 'selected' : ''?>>Cakes > Cheesecake > Fruity</option>
-      <option value="cakes,cheesecakes,sweet"  <?= $product->getProductCategory() === 'cakes,cheesecakes,sweet' ? 'selected' : ''?>>Cakes > Cheesecake > Sweet</option>
-      <option value="cakes,cupcakes,with-frosting" <?= $product->getProductCategory() === 'cakes,cupcakes,with-frosting' ? 'selected' : ''?>>Cakes > Cupcakes > With frosting</option>
-      <option value="cakes,cupcakes,without-rosting" <?= $product->getProductCategory() === 'cakes,cupcakes,without-rosting' ? 'selected' : ''?>>Cakes > Cupcakes > Without frosting</option>
-      <option value="icecreams,vegan" <?= $product->getProductCategory() === 'icecreams,vegan' ? 'selected' : ''?>>Icecreams > Vegan</option>
-      <option value="icecreams,non-vegan,chocolate" <?= $product->getProductCategory() === 'icecreams,non-vegan,chocolate' ? 'selected' : ''?>>Icecreams > Non-vegan > Chocolate</option>
-      <option value="icecreams,non-vegan,caramel" <?= $product->getProductCategory() === 'icecreams,non-vegan,caramel' ? 'selected' : ''?>>Icecreams > Non-vegan > Caramel</option>
-    </select>
-
-    <label for="productDescription">Product Stock:</label>
-    <input type="text" name="productStock" required value="<?= $product->getProductStock()?>">
-
-    <button type="submit">Edit Product</button>
-</form> 
-<form action="./delete_product_action.php" method="post">
-  <input type="hidden" name="productID" value="<?= $product->getProductID()?>">
-  <button type="submit">Delete Product</button>
-</form>
- <?php
-}
-?>
+</div>
 
 
 </body>
